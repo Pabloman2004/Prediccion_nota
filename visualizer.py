@@ -5,8 +5,21 @@ from tkinter import simpledialog
 import pandas as pd
 
 class Visualizer:
-    def plot_graph(self, data, predictions, prediccion_usuario, output_pdf='resultados.pdf'):
+    def plot_graph(self, data, predictions, prediccion_usuario,valores_usuario, output_pdf='resultados.pdf'):
+        
         with PdfPages(output_pdf) as pdf:
+            # Agregar una introducción al PDF
+            plt.figure(figsize=(10, 6))
+            plt.axis('off')  # Ocultar los ejes
+            introduccion = (
+                "Este es un ejemplo de los resultados que muestra el modelo de regresión lineal. "
+                "Los resultados pueden variar en función de los datos de estudio y los datos que se introducen "
+                "para realizar la predicción."
+            )
+            plt.text(0.5, 0.5, introduccion, ha='center', va='center', wrap=True, fontsize=12)
+            pdf.savefig()  # Guarda la figura actual en el PDF
+            plt.close()
+            
             # Graficar los datos reales y las predicciones para cada variable independiente
             for column in data.columns:
                 if column != 'Nota Final':
@@ -41,9 +54,9 @@ class Visualizer:
                 "El modelo de regresión lineal muestra que las horas de estudio tienen un impacto significativo "
                 "en la nota final de los estudiantes. A medida que aumentan las horas de estudio, la nota final "
                 "tiende a mejorar. Otros factores como la asistencia a clases y las calificaciones anteriores "
-                "también contribuyen al éxito académico, las calificaciones anteriores son bastante relevantes. "
-                "Este modelo puede ser útil para identificar áreas de mejora y ayudar a los estudiantes a"
-                "  planificar su tiempo de estudio de manera más efectiva.\n\n"
+                "también contribuyen al éxito académico, pero en menor medida. Este modelo puede ser útil para "
+                "identificar áreas de mejora y ayudar a los estudiantes a planificar su tiempo de estudio de manera "
+                "más efectiva.\n\n"
                 f"Predicción de la Nota Final para los valores ingresados: {prediccion_usuario[0]}"
             )
             plt.text(0.5, 0.5, conclusion, ha='center', va='center', wrap=True, fontsize=12)

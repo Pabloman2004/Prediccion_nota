@@ -4,6 +4,10 @@ from data_loader import DataLoader
 from exitoEstudiantilData import ExitoEstudiantilData
 from model import LinearRegressionModel
 from visualizer import Visualizer
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_pdf import PdfPages
+import tkinter as tk
+from tkinter import simpledialog
 
 def main():
     archivo_csv = "datos_estudiantes.csv"
@@ -31,16 +35,14 @@ def main():
             model = LinearRegressionModel()
             model.train(data[X_columns], data[y_column])
             
-            # Visualizar los resultados (opcional, si deseas ver los gráficos)
-            # visualizer = Visualizer()
-            # visualizer.plot_graph(data, predictions)
-            
             # Solicitar valores al usuario y hacer una predicción
             visualizer = Visualizer()
             valores_usuario = visualizer.solicitar_valores_gui(X_columns)
             prediccion_usuario = model.predict(valores_usuario)
-            visualizer.plot_graph(data, model.predict(data[X_columns]),prediccion_usuario)
             print(f"La predicción de la Nota Final para los valores ingresados es: {prediccion_usuario[0]}")
+            
+            # Visualizar los resultados y agregar la predicción al PDF
+            visualizer.plot_graph(data, model.predict(data[X_columns]), prediccion_usuario, valores_usuario)
         else:
             print(f"Las columnas '{X_columns}' y/o '{y_column}' no se encuentran en los datos.")
     else:
@@ -48,3 +50,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
